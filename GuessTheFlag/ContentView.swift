@@ -15,7 +15,7 @@ struct ContentView: View {
         ZStack{
             //Color.primary used for text to automaticaly convert from white to black when the darkmode is on
             // Shift+command+A for switching between dark and light mode
-            Color(red:2,green:0.8,blue:1)
+            Color(red:1.5,green:4.5,blue:0)
                 .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/,maxHeight: .infinity)
                 .ignoresSafeArea()
             Text("This is the Text below")
