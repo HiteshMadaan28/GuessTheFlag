@@ -42,19 +42,21 @@ struct ContentView:View{
                 VStack{
                     Text("Tap the Flag OFF")
                         .foregroundStyle(.white)
-                        .font(.largeTitle)
+                        .font(.subheadline.weight(.heavy))
                     
                     Text(countries[correctAns])
                         .foregroundStyle(.white)
-                        .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                        .font(.largeTitle.bold())
                 }
-                VStack{
+                VStack(spacing : 30){
                     ForEach(0..<3){ numbers in
                         Button{
                             flagTapped(numbers)
                             
                         }label: {
                             Image(countries[numbers])
+                                .clipShape(.capsule)
+                                .shadow(radius: 5)
                         }
                         
                     }
@@ -63,7 +65,7 @@ struct ContentView:View{
         }.alert(scoreTitle,isPresented: $gameAlert){
             Button("Continue",action: askQuestion)
             }message:{
-                Text("Your score is  ")
+                Text("Your score is ???")
             }
     }
 }
