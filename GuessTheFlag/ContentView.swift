@@ -13,12 +13,14 @@ struct ContentView:View{
     @State private var correctAns = Int.random(in: 0...2)
     
     @State private var gameAlert=false
+    @State private var score=0
     @State private var scoreTitle=""
     
     func flagTapped(_ number:Int){
         
         if(number == correctAns){
             scoreTitle = "Congratulations"
+            score += 1
         }
         else{
             scoreTitle="Missed"
@@ -61,11 +63,19 @@ struct ContentView:View{
                         
                     }
                 }
+                Button("Restart",role: .destructive){
+                    
+                    score=0
+                    
+                }
             }
+           
+            
+            
         }.alert(scoreTitle,isPresented: $gameAlert){
             Button("Continue",action: askQuestion)
             }message:{
-                Text("Your score is ???")
+                Text("Your score is \(score)")
             }
     }
 }
