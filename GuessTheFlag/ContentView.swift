@@ -57,7 +57,6 @@ struct ContentView:View{
                             
                         }label: {
                             Image(countries[numbers])
-                                .clipShape(.capsule)
                                 .shadow(radius: 5)
                         }
                         
