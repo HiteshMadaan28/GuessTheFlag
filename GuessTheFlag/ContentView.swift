@@ -13,20 +13,40 @@ struct ContentView:View{
     @State private var correctAns = Int.random(in: 0...2)
     
     @State private var gameAlert=false
+    @State private var gameFinished=false
     @State private var score=0
     @State private var scoreTitle=""
+    @State private var totalQuestion=0
     
+    func re(){
+        score=0
+        totalQuestion=0
+    }
     func flagTapped(_ number:Int){
         
         if(number == correctAns){
             scoreTitle = "Congratulations"
             score += 1
+            totalQuestion += 1
+            if(totalQuestion==8){
+                gameFinished=true
+                
+                
+            }
         }
         else{
-            scoreTitle="Missed"
+            scoreTitle="Wrong! That’s the flag of \(countries[correctAns])"
+            totalQuestion += 1
+            if(totalQuestion==8){
+                gameFinished=true
+                
+            }
+            
         }
         
         gameAlert=true
+        
+        askQuestion()
         
     }
     
@@ -39,43 +59,76 @@ struct ContentView:View{
         ZStack{
             LinearGradient(colors: [.yellow , .green], startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea()
+            VStack{
                 
-            VStack(spacing:30){
-                VStack{
-                    Text("Tap the Flag OFF")
-                        .foregroundStyle(.white)
-                        .font(.subheadline.weight(.heavy))
-                    
-                    Text(countries[correctAns])
-                        .foregroundStyle(.white)
-                        .font(.largeTitle.bold())
-                }
-                VStack(spacing : 30){
-                    ForEach(0..<3){ numbers in
-                        Button{
-                            flagTapped(numbers)
-                            
-                        }label: {
-                            Image(countries[numbers])
-                                .shadow(radius: 5)
-                        }
+                Spacer()
+                
+                Text("Guess The Flag")
+                    .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/.bold())
+                    .foregroundColor(.white)
+                
+                VStack(spacing:15){
+                    VStack{
+                        Text("Tap the Flag OFF")
+                            .foregroundStyle(.secondary)
+                            .font(.subheadline.weight(.heavy))
                         
+                        Text(countries[correctAns])
+                            .font(.largeTitle.bold())
                     }
-                }
-                Button("Restart",role: .destructive){
+                    VStack(spacing : 30){
+                        ForEach(0..<3){ numbers in
+                            Button{
+                                flagTapped(numbers)
+                                
+                            }label: {
+                                Image(countries[numbers])
+                                    .shadow(radius: 5)
+                                    .clipShape(.rect(cornerRadius: 15))
+                            }
+                            
+                        }
+                    }
                     
-                    score=0
+                    Text("\(totalQuestion) / 8")
                     
                 }
-            }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 20)
+                .background(.regularMaterial)
+                .clipShape(.rect(cornerRadius: 20))
+                
+                Spacer()
+                Spacer()
+                
+                Text("Result : \(score)")
+                    .font(.title2.bold())
+                    .foregroundStyle(.white)
+                    
+                    
+                    
+                    
+                
+                Spacer()
+            }.padding()
            
             
             
-        }.alert(scoreTitle,isPresented: $gameAlert){
-            Button("Continue",action: askQuestion)
-            }message:{
-                Text("Your score is \(score)")
-            }
+        }
+//        .alert(scoreTitle,isPresented: $gameAlert){
+//            Button("Continue",action: askQuestion)
+//            }message:{
+//                Text("Your score is \(score)")
+//            }
+         .alert("The Game is Finished",isPresented: $gameFinished){
+                
+                Button("Restart",action: re)
+               
+                }message:{
+                    Text("Final Score \(score)")
+                    
+                }
+        
     }
 }
     
