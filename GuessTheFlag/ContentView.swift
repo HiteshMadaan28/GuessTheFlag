@@ -25,28 +25,26 @@ struct ContentView:View{
     func flagTapped(_ number:Int){
         
         if(number == correctAns){
-            scoreTitle = "Congratulations"
+            
             score += 1
             totalQuestion += 1
             if(totalQuestion==8){
                 gameFinished=true
-                
-                
             }
+            scoreTitle = "Congratulations"
         }
         else{
-            scoreTitle="Wrong! That’s the flag of \(countries[correctAns])"
+            
             totalQuestion += 1
             if(totalQuestion==8){
                 gameFinished=true
                 
             }
+            scoreTitle="Wrong! That’s the flag of \(countries[correctAns])"
             
         }
         
         gameAlert=true
-        
-        askQuestion()
         
     }
     
@@ -115,11 +113,11 @@ struct ContentView:View{
             
             
         }
-//        .alert(scoreTitle,isPresented: $gameAlert){
-//            Button("Continue",action: askQuestion)
-//            }message:{
-//                Text("Your score is \(score)")
-//            }
+        .alert(scoreTitle,isPresented: $gameAlert){
+            Button("Continue",action: askQuestion)
+            }message:{
+                Text("Your score is \(score)")
+            }
          .alert("The Game is Finished",isPresented: $gameFinished){
                 
                 Button("Restart",action: re)
