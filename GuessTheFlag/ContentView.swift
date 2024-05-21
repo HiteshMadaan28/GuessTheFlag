@@ -11,9 +11,10 @@ struct TitleModifier: ViewModifier{
     
     func body(content: Content) -> some View {
         content
-            .font(.largeTitle)
-            .foregroundColor(.blue)
-            
+            .font(.largeTitle.bold())
+            .foregroundColor(.white)
+        
+        
     }
 }
 
@@ -28,6 +29,7 @@ struct FlagImage: ViewModifier {
         content
             .shadow(radius: 5)
             .clipShape(.rect(cornerRadius: 15))
+            .rotation3DEffect(.degrees(360), axis: (x: 0, y: 1, z: 0))
     }
 }
 
@@ -44,12 +46,13 @@ struct ContentView:View{
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Spain", "UK", "Ukraine", "US"].shuffled()
     
     @State private var correctAns = Int.random(in: 0...2)
-    
+    @State private var animationAmount=0.0
     @State private var gameAlert=false
     @State private var gameFinished=false
     @State private var score=0
     @State private var scoreTitle=""
     @State private var totalQuestion=0
+    @State private var selectedFlag:Int=4
     
     func re(){
         score=0
@@ -76,7 +79,7 @@ struct ContentView:View{
             scoreTitle="Wrong! That’s the flag of \(countries[correctAns])"
             
         }
-        
+        selectedFlag = 4
         gameAlert=true
         
     }
@@ -88,7 +91,7 @@ struct ContentView:View{
     
     var body: some View{
         ZStack{
-            LinearGradient(colors: [.yellow , .green], startPoint: .top, endPoint: .bottom)
+            LinearGradient(colors: [.pink , .blue], startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea()
             VStack{
                 
@@ -96,8 +99,8 @@ struct ContentView:View{
                 
                 Text("Guess The Flag")
                     .titleM()
-//                    .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/.bold())
-//                    .foregroundColor(.white)
+                //                    .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/.bold())
+                //                    .foregroundColor(.white)
                 
                 VStack(spacing:15){
                     VStack{
@@ -111,12 +114,23 @@ struct ContentView:View{
                     VStack(spacing : 30){
                         ForEach(0..<3){ numbers in
                             Button{
+                                
+                                selectedFlag=numbers
                                 flagTapped(numbers)
+                                animationAmount += 360
+                                
                                 
                             }label: {
-                                Image(countries[numbers]).flagImage()
-//                                    .shadow(radius: 5)
-//                                    .clipShape(.rect(cornerRadius: 15))
+                                
+                                Image(countries[numbers])
+                                    .shadow(radius: 5)
+                                    .clipShape(.rect(cornerRadius: 15))
+                                    .rotation3DEffect(.degrees(animationAmount), axis: (x: 0, y: 1, z: 0))
+                                
+                                
+                                
+                                
+                                
                                 
                                 
                             }
@@ -138,34 +152,34 @@ struct ContentView:View{
                 Text("Result : \(score)")
                     .font(.title2.bold())
                     .foregroundStyle(.white)
-                    
-                    
-                    
-                    
+                
+                
+                
+                
                 
                 Spacer()
             }.padding()
-           
+            
             
             
         }
         .alert(scoreTitle,isPresented: $gameAlert){
             Button("Continue",action: askQuestion)
-            }message:{
-                Text("Your score is \(score)")
-            }
-         .alert("The Game is Finished",isPresented: $gameFinished){
-                
-                Button("Restart",action: re)
-               
-                }message:{
-                    Text("Final Score \(score)")
-                    
-                }
+        }message:{
+            Text("Your score is \(score)")
+        }
+        .alert("The Game is Finished",isPresented: $gameFinished){
+            
+            Button("Restart",action: re)
+            
+        }message:{
+            Text("Final Score \(score)")
+            
+        }
         
     }
 }
-    
+
 
 
 //struct ContentView: View {
