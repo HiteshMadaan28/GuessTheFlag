@@ -52,13 +52,15 @@ struct ContentView:View{
     @State private var score=0
     @State private var scoreTitle=""
     @State private var totalQuestion=0
-    @State private var selectedFlag:Int=4
+    @State private var selectedFlag:Int?=nil
     
     func re(){
         score=0
         totalQuestion=0
+        selectedFlag = nil
     }
     func flagTapped(_ number:Int){
+        
         
         if(number == correctAns){
             
@@ -79,12 +81,14 @@ struct ContentView:View{
             scoreTitle="Wrong! That’s the flag of \(countries[correctAns])"
             
         }
-        selectedFlag = 4
+        
         gameAlert=true
+        
         
     }
     
     func askQuestion(){
+        selectedFlag=nil
         countries.shuffle()
         correctAns=Int.random(in: 0...2)
     }
@@ -114,9 +118,10 @@ struct ContentView:View{
                     VStack(spacing : 30){
                         ForEach(0..<3){ numbers in
                             Button{
-                                
-                                selectedFlag=numbers
-                                flagTapped(numbers)
+                                withAnimation{
+                                    selectedFlag=numbers
+                                    flagTapped(numbers)
+                                }
                                 animationAmount += 360
                                 
                                 
@@ -126,12 +131,7 @@ struct ContentView:View{
                                     .shadow(radius: 5)
                                     .clipShape(.rect(cornerRadius: 15))
                                     .rotation3DEffect(.degrees(animationAmount), axis: (x: 0, y: 1, z: 0))
-                                
-                                
-                                
-                                
-                                
-                                
+                                    .opacity(selectedFlag != nil && selectedFlag != numbers ? 0.25 : 1)
                                 
                             }
                             
